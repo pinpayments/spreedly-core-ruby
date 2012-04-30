@@ -18,7 +18,6 @@ module SpreedlyCore
       return nil if token.nil?
       verify_get("/transactions/#{token}.xml", :has_key => "transaction") do |response|
         attrs = response.parsed_response["transaction"]
-        puts "ATTR: #{attrs.inspect}"
         klass = @@transaction_type_to_class[attrs["transaction_type"]] || self
         klass.new(attrs).tap do |transaction|
           transaction.verified!
