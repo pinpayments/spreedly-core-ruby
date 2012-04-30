@@ -9,9 +9,13 @@ module SpreedlyCore
     class Parser::Spreedly < HTTParty::Parser
       def parse
         parsed = super
-        message = XML::Document.string(body).find('/transaction/message')
-        message.each do |node|
-          parsed['transaction']['message_key'] = node['key'] if node['key']
+        begin
+          message = XML::Document.string(body).find('/transaction/message')
+          message.each do |node|
+            parsed['transaction']['message_key'] = node['key'] if node['key']
+          end
+        rescue LibXML::XML::Error
+          # XML isn't valid. Ignore
         end
         parsed
       end
