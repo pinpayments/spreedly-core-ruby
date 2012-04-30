@@ -1,9 +1,23 @@
 require 'spreedly-core-ruby/version'
+require 'xml'
 
 module SpreedlyCore
   # Base class for all SpreedlyCore API requests
   class Base
     include HTTParty
+
+    class Parser::Spreedly < HTTParty::Parser
+      def parse
+        parsed = super
+        message = XML::Document.string(body).find('/transaction/message')
+        message.each do |node|
+          parsed['transaction']['message_key'] = node['key'] if node['key']
+        end
+        parsed
+      end
+    end
+
+    parser Parser::Spreedly
 
     # Net::HTTP::Options is configured to not have a body.
     # Lets give it the body it's always dreamed of

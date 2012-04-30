@@ -2,7 +2,7 @@ module SpreedlyCore
   # Abstract class for all the different spreedly core transactions
   class Transaction < Base
     attr_reader(:amount, :on_test_gateway, :created_at, :updated_at, :currency_code,
-                :succeeded, :token, :message, :transaction_type, :gateway_token,
+                :succeeded, :token, :message, :message_key, :transaction_type, :gateway_token,
                 :response, :signed, :state, :checkout_url)
     alias :succeeded? :succeeded
 
@@ -18,6 +18,7 @@ module SpreedlyCore
       return nil if token.nil?
       verify_get("/transactions/#{token}.xml", :has_key => "transaction") do |response|
         attrs = response.parsed_response["transaction"]
+        puts "ATTR: #{attrs.inspect}"
         klass = @@transaction_type_to_class[attrs["transaction_type"]] || self
         klass.new(attrs).tap do |transaction|
           transaction.verified!
