@@ -14,7 +14,7 @@ module SpreedlyCore
           message.each do |node|
             parsed['transaction']['message_key'] = node['key'] if node['key']
           end
-        rescue LibXML::XML::Error
+        rescue LibXML::XML::Error, ArgumentError
           # XML isn't valid. Ignore
         end
         parsed
