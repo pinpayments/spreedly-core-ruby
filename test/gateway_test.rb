@@ -13,7 +13,7 @@ module SpreedlyCore
       all = Gateway.all
       [tg1, tg2].each{|g| assert all.include?(g)}
     end
-    
+
     def test_create_succeeds_for_test
       assert_nothing_raised InvalidResponse do
         Gateway.create(:gateway_type => 'test')

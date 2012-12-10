@@ -6,23 +6,6 @@ module SpreedlyCore
   class Base
     include HTTParty
 
-    class Parser::Spreedly < HTTParty::Parser
-      def parse
-        parsed = super
-        begin
-          message = XML::Document.string(body).find('/transaction/message')
-          message.each do |node|
-            parsed['transaction']['message_key'] = node['key'] if node['key']
-          end
-        rescue LibXML::XML::Error, ArgumentError
-          # XML isn't valid. Ignore
-        end
-        parsed
-      end
-    end
-
-    parser Parser::Spreedly
-
     # Net::HTTP::Options is configured to not have a body.
     # Lets give it the body it's always dreamed of
     old_verbose, $VERBOSE = $VERBOSE, nil
