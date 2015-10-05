@@ -76,7 +76,7 @@ module SpreedlyCore
       raise ArgumentError.new("You must provide a login and a secret. Gem will look for ENV['SPREEDLYCORE_API_LOGIN'] and ENV['SPREEDLYCORE_API_SECRET'], but you may also pass in a hash with :api_login and :api_secret keys.")
     end
 
-    options[:endpoint] ||= "https://spreedlycore.com/#{SpreedlyCore::API_VERSION}"
+    options[:endpoint] ||= "https://core.spreedly.com/#{SpreedlyCore::API_VERSION}"
 
     Base.configure(login, secret, options)
   end
